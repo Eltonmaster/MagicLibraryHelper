@@ -9,5 +9,5 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Drag And Drop Test")
         self.setFixedSize(QSize(300,400))
-        text_edit = TextEdit("Test")
+        text_edit = TextEdit("Drag and Drop .txt file here")
         self.setCentralWidget(text_edit)
