@@ -9,6 +9,7 @@ import sys
 
 FILE_HANDLE = ""
 
+
 def add_cards_to_db(card_db):
     new_cards = load_new_cards_from_txt(card_db)
     if len(new_cards) > 0:
