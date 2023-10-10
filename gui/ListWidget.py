@@ -30,6 +30,8 @@ class ListWidget(QListWidget):
             event.setDropAction(QtCore.Qt.DropAction.CopyAction)
             event.accept()
             card_list = self.handle_file(event.mimeData().text()[8:])   # Strip the first chars of file:///C:/XX/YY/...
+            for entry in card_list:
+                self.addItem(entry.to_export_string().strip())
         else:
             super(ListWidget, self).dropEvent(event)
 
@@ -38,9 +40,11 @@ class ListWidget(QListWidget):
         if path_to_file.endswith(".txt"):
             with open(path_to_file, "r", encoding="utf-8") as f:
                 f_content = f.read()
-                for entry in sort_cards([x for x in f_content.strip().split("\n")]):
-
-                    self.addItem(entry.strip())
+                str_in = f_content.strip().split("\n")
+                cards_in = [Card.from_string(x) for x in str_in]
+                cards_sorted = sort_cards(cards_in)
+                return cards_sorted
+                #return sort_cards([Card.from_string(x) for x in f_content.strip().split("\n")])
         elif path_to_file.endswith(".csv"):
             # todo
             pass
@@ -48,7 +52,7 @@ class ListWidget(QListWidget):
     def import_db(self, path_to_db):
         with open(path_to_db, "r") as f:
             temp_db = json.load(f)
-            db = [Card(x["number"], x["card_name"], x["extension_code"], x["collector_number"]) for x in temp_db]
+            db = [Card.from_dict(x) for x in temp_db]
             db = sort_cards(db)
             for entry in db:
                 self.addItem(f"{entry.number} {entry.card_name} {entry.extension_code} {entry.collector_number}")

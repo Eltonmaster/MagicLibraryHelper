@@ -1,5 +1,5 @@
 import json
-
+import re
 
 
 class Card:
@@ -13,6 +13,30 @@ class Card:
         self.extension_code = extension_code
         self.collector_number = collector_number
         self.number = number
+
+    @classmethod
+    def from_string(cls, import_string):
+        try:
+            match = re.search(r'^(\d+) (.+) \((.+)\) (\d+)', import_string)
+            if match:
+                number = match.group(1)
+                card_name = match.group(2)
+                extension_code = match.group(3)
+                collector_number = match.group(4)
+            else:
+                match = re.search(r'^(\d+) (.+)$', import_string)
+                number = match.group(1)
+                card_name = match.group(2)
+                extension_code = "---"
+                collector_number = "---"
+            return cls(number, card_name, extension_code, collector_number)
+        except AttributeError as att_ex:
+            print("\n" + import_string + "\n")
+            print(att_ex)
+
+    @classmethod
+    def from_dict(cls, import_cls):
+        return cls(import_cls["number"], import_cls["card_name"], import_cls["extension_code"], import_cls["collector_number"])
 
     def to_dict(self):
         return {
