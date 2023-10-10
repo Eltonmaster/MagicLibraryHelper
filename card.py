@@ -1,6 +1,7 @@
 import json
 
 
+
 class Card:
     card_name = ""
     extension_code = ""
@@ -39,4 +40,12 @@ class Card:
 
     def to_stripped_export_string(self):
         return f"{self.number} {self.card_name}\n"
-    
+
+
+def sort_cards(list_of_cards):
+    if isinstance(list_of_cards[0], str):
+        print("Sort list of strings")
+        return sorted(list_of_cards, key=lambda x:x[x.find(" "):])
+    if isinstance(list_of_cards[0], Card):
+        print("Sort list of Cards")
+        return sorted(list_of_cards, key=lambda x:x.card_name)

@@ -2,7 +2,8 @@ from PyQt6.QtWidgets import QMainWindow, QGridLayout, QWidget, QLabel, QListWidg
 from PyQt6.QtGui import QPixmap
 from PyQt6.QtCore import QSize, Qt
 from gui.TextEdit import TextEdit
-import requests
+from gui.ListWidget import ListWidget
+import requests, os
 
 
 class MainWindow(QMainWindow):
@@ -11,7 +12,9 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("MLH")
         layout = QGridLayout()
         layout.setSpacing(15)
-        text_edit = TextEdit("Drag and Drop .txt file here")
+        text_edit = ListWidget()
+        if os.path.exists("db.json"):
+            text_edit.import_db("db.json")
         text_edit2 = TextEdit("Decklist-Stuff")
         card_image = QPixmap("./gui/placeholder.png")          # if not loaded from bytes can use QPixmap(_path_to_image_file_)
         #resp = requests.get("https://cards.scryfall.io/png/front/d/5/d5806e68-1054-458e-866d-1f2470f682b2.png?1696020224").content
